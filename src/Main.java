@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class Main {
 
-    private static final String RATINGS = "C:\\Users\\yuris\\Downloads\\archive\\train.csv";
+    private static final String PATH = "resources\\train.csv";
 
     public static void main(String[] args) {
         long startTime = System.currentTimeMillis();
@@ -18,7 +18,7 @@ public class Main {
 
         int count = 0;
         int matches = 0;
-        try(BufferedReader bfRating = new BufferedReader(new FileReader(RATINGS))){
+        try(BufferedReader bfRating = new BufferedReader(new FileReader(PATH))){
 
             String ratingLine = bfRating.readLine();
             count++;
