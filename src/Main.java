@@ -3,7 +3,10 @@ import util.LevenshteinDistance;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Main {
 
@@ -12,47 +15,43 @@ public class Main {
     public static void main(String[] args) {
         long startTime = System.currentTimeMillis();
 
-        Scanner sc = new Scanner(System.in);
-
-        String w = sc.nextLine();
-
         int count = 0;
-        int matches = 0;
-        try(BufferedReader bfRating = new BufferedReader(new FileReader(PATH))){
+        Map<String, Integer> matches = new HashMap<>();
 
-            String ratingLine = bfRating.readLine();
-            count++;
+        try (BufferedReader bfRating = new BufferedReader(new FileReader(PATH))) {
 
-            while (ratingLine != null) {
+            String ratingLine;
 
-                String[] arrayRatingLine = ratingLine .split(",");
-                String rating = arrayRatingLine[2].replaceAll("\"", "").toLowerCase();
-                String[] words = rating.split(" ");
+            List<String> items = new ArrayList<>(List.of("coffee", "book", "keyboard", "paper"));
 
-                for (String s : words) {
-                    int distance = LevenshteinDistance.calculateDistance(s, w);
-                    if (distance <= 1){
-                        matches++;
-                        System.out.println(s);
-                        System.out.println("Matches: " + matches);
-                        break;
-                    }
-
-                }
-
-                ratingLine = bfRating.readLine();
+            while ((ratingLine = bfRating.readLine()) != null) {
                 count++;
-                // System.out.println("Line: " + count);
 
+                for (String item : items) {
+                    String[] arrayRatingLine = ratingLine.split(",");
+                    String rating = arrayRatingLine[2].replaceAll("\"", "").toLowerCase();
+                    String[] words = rating.split(" ");
+
+                    for (String s : words) {
+                        int distance = LevenshteinDistance.calculateDistance(s, item);
+                        if (distance == 0) {
+
+                            matches.put(s, matches.getOrDefault(s, 0) + 1);
+                            System.out.println(item);
+                            break;
+                        }
+                    }
+                }
             }
 
-        }
-        catch(IOException e){
+        } catch (IOException e) {
             System.out.println(e.getMessage());
         }
 
         System.out.println("Total read and print time: " + (double) (System.currentTimeMillis() - startTime) / 60000);
         System.out.println("Count: " + count);
-        System.out.println("Total matches: " + matches);
+        matches.forEach((k, v) -> {
+            System.out.println(k + "-> " + v);
+        });
     }
 }
