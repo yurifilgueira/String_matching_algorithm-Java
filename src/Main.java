@@ -22,7 +22,7 @@ public class Main {
 
             String ratingLine;
 
-            List<String> items = new ArrayList<>(List.of("coffee", "book", "keyboard", "paper"));
+            List<String> items = new ArrayList<>(List.of("logitech", "mouse", "keyboard", "hyperx", "razer"));
 
             while ((ratingLine = bfRating.readLine()) != null) {
                 count++;
