@@ -22,21 +22,27 @@ public class Main {
 
         List<String> items = new ArrayList<>(List.of("logitech", "keyboard", "mouse", "hyperx", "razer"));
 
-        lines.forEach( line -> {
-            String[] arrayRatingLine = line.split(",");
-            String rating = arrayRatingLine[2].replaceAll("\"", "").toLowerCase();
-            String[] words = rating.split(" ");
+        if (lines != null) {
 
-            count.getAndIncrement();
-            items.forEach(item -> {
-                for (String word : words) {
-                    if (LevenshteinDistance.calculateDistance(item, word) == 0) {
-                        matches.put(item, matches.getOrDefault(item, 0) + 1);
-                        break;
+            lines.forEach(line -> {
+                String[] arrayRatingLine = line.split(",");
+                String rating = arrayRatingLine[2].replaceAll("\"", "").toLowerCase();
+                String[] words = rating.split(" ");
+
+                count.getAndIncrement();
+                items.forEach(item -> {
+                    for (String word : words) {
+                        if (LevenshteinDistance.calculateDistance(item, word) == 0) {
+                            matches.put(item, matches.getOrDefault(item, 0) + 1);
+                            break;
+                        }
                     }
-                }
+                });
             });
-        });
+        }
+        else {
+            throw new NullPointerException("Line list is null!");
+        }
 
         System.out.println("Total read and print time: " + (double) (System.currentTimeMillis() - startTime) / 60000);
         System.out.println("Count: " + count);
