@@ -1,5 +1,5 @@
+import util.CalculateDistance;
 import util.DatasetReader;
-import util.LevenshteinDistance;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,21 +24,21 @@ public class Main {
 
         if (lines != null) {
 
-            lines.forEach(line -> {
-                String[] arrayRatingLine = line.split(",");
-                String rating = arrayRatingLine[2].replaceAll("\"", "").toLowerCase();
-                String[] words = rating.split(" ");
+            List<Thread> threads = new ArrayList<>();
 
-                count.getAndIncrement();
-                items.forEach(item -> {
-                    for (String word : words) {
-                        if (LevenshteinDistance.calculateDistance(item, word) == 0) {
-                            matches.put(item, matches.getOrDefault(item, 0) + 1);
-                            break;
-                        }
-                    }
-                });
-            });
+            int idx = 0;
+            for (String item : items) {
+                Thread thread = Thread.ofPlatform().name(item).start(new CalculateDistance(lines, count, item, matches));
+                threads.add(thread);
+            }
+
+            for (Thread thread : threads) {
+                try {
+                    thread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         else {
             throw new NullPointerException("Line list is null!");
@@ -49,5 +49,6 @@ public class Main {
         matches.forEach((k, v) -> {
             System.out.println(k + "-> " + v);
         });
+
     }
 }
