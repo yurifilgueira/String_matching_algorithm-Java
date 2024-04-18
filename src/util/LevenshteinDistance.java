@@ -62,5 +62,4 @@ public class LevenshteinDistance {
         return distance[rows][columns];
 
     }
-
 }

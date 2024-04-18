@@ -30,3 +30,4 @@ bin/
 
 ### Resource ###
 resources/train.csv
+resources/results.txt

@@ -1,0 +1,11 @@
+Quantity of matches:
+keyboard -> 3736
+mouse -> 5475
+samsung -> 1957
+acer -> 134
+logitech -> 1417
+hyperx -> 2
+lg -> 562
+laptop -> 6062
+razer -> 54
+lenovo -> 118
