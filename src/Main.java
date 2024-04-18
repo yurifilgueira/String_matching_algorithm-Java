@@ -1,54 +1,33 @@
-import util.CalculateDistance;
 import util.DatasetReader;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Main {
 
-    public static void main(String[] args) {
-
-        String PATH = "resources\\train.csv";
+    public static void main(String[] args) throws InterruptedException {
+        final String PATH = "resources\\train.csv";
 
         long startTime = System.currentTimeMillis();
 
-        AtomicInteger count = new AtomicInteger();
-        Map<String, Integer> matches = new HashMap<>();
+        List<String> items = new ArrayList<>(List.of("logitech", "keyboard", "mouse", "hyperx", "razer", "lenovo", "acer", "lg", "samsung", "laptop"));
 
-        List<String> lines = DatasetReader.readFile(PATH);
+        List<Thread> threads = new ArrayList<>();
 
-        List<String> items = new ArrayList<>(List.of("logitech", "keyboard", "mouse", "hyperx", "razer"));
+        ConcurrentHashMap matches = new ConcurrentHashMap();
 
-        if (lines != null) {
-
-            List<Thread> threads = new ArrayList<>();
-
-            int idx = 0;
-            for (String item : items) {
-                Thread thread = Thread.ofPlatform().name(item).start(new CalculateDistance(lines, count, item, matches));
-                threads.add(thread);
-            }
-
-            for (Thread thread : threads) {
-                try {
-                    thread.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
+        for (int i = 0; i < items.size(); i++) {
+            Thread t = Thread.ofVirtual().name(String.valueOf(i)).start(new DatasetReader(items.get(i), items.get(++i), matches));
+            threads.add(t);
         }
-        else {
-            throw new NullPointerException("Line list is null!");
+
+        for (Thread thread : threads) {
+            thread.join();
         }
 
         System.out.println("Total read and print time: " + (double) (System.currentTimeMillis() - startTime) / 60000);
-        System.out.println("Count: " + count);
-        matches.forEach((k, v) -> {
-            System.out.println(k + "-> " + v);
-        });
-
+        // System.out.println("Count: " + count);
+        matches.forEach((k, v) -> System.out.println("Match: " + k + " - " + v));
     }
 }
