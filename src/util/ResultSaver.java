@@ -4,15 +4,19 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Map;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static java.nio.file.Files.newBufferedWriter;
 
 public class ResultSaver {
 
     private final static String PATH = "resources\\results.txt";
+    private static final Lock lock = new ReentrantLock();
 
-    public static void save(Map<String, Integer> matches){
+     public static void save(Map<String, Integer> matches){
 
+        lock.lock();
         try (BufferedWriter bw = newBufferedWriter(Paths.get(PATH))) {
 
             bw.write("Quantity of matches:");
@@ -30,6 +34,9 @@ public class ResultSaver {
 
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+        finally {
+            lock.unlock();
         }
     }
 

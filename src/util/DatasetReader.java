@@ -3,27 +3,30 @@ package util;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Map;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static java.nio.file.Files.newBufferedReader;
 
 public class DatasetReader implements Runnable{
 
     private final static String PATH = "resources\\train.csv";
+    private final Lock lock = new ReentrantLock();
 
     private String item;
     private String item2;
-    private ConcurrentHashMap matches;
+    private Map<String, Integer>  matches;
 
     public DatasetReader() {
     }
 
-    public DatasetReader(String item, ConcurrentHashMap matches) {
+    public DatasetReader(String item, Map<String, Integer> matches) {
         this.item = item;
         this.matches = matches;
     }
 
-    public DatasetReader(String item, String item2, ConcurrentHashMap matches) {
+    public DatasetReader(String item, String item2, Map<String, Integer>  matches) {
         this.item = item;
         this.item2 = item2;
         this.matches = matches;
@@ -33,9 +36,9 @@ public class DatasetReader implements Runnable{
 
         try (BufferedReader br = newBufferedReader(Paths.get(PATH))) {
 
+
             int counter = 0;
             String line;
-            Thread.sleep(1000);
             System.out.println(Thread.currentThread().getName() + " começou.");
             while ((line = br.readLine()) != null) {
                 counter++;
@@ -45,12 +48,20 @@ public class DatasetReader implements Runnable{
 
                 for (String word : words) {
                     if (LevenshteinDistance.calculateDistance(item, word) == 0){
-                        matches.put(word, (int) matches.getOrDefault(word, 0) + 1);
+
+                        lock.lock();
+                        matches.put(word, matches.getOrDefault(word, 0) + 1);
+                        lock.unlock();
+
                         System.out.println("Match: " + item + " - " + word);
                         break;
                     }
                     else if (LevenshteinDistance.calculateDistance(item2, word) == 0){
-                        matches.put(word, (int) matches.getOrDefault(word, 0) + 1);
+
+                        lock.lock();
+                        matches.put(word, matches.getOrDefault(word, 0) + 1);
+                        lock.unlock();
+
                         System.out.println("Match: " + item2 + " - " + word);
                         break;
                     }
@@ -58,11 +69,10 @@ public class DatasetReader implements Runnable{
             }
 
             System.out.println("Count: " + counter);
+
             ResultSaver.save(matches);
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
