@@ -1,6 +1,6 @@
 Quantity of matches:
-mouse -> 5475
 keyboard -> 3671
+mouse -> 5475
 samsung -> 1947
 acer -> 134
 logitech -> 1357

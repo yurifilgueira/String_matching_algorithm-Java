@@ -1,13 +1,13 @@
 import util.DatasetReader;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Map;
 
 public class Main {
 
     public static void main(String[] args) throws InterruptedException {
-        final String PATH = "resources\\train.csv";
 
         long startTime = System.currentTimeMillis();
 
@@ -15,7 +15,7 @@ public class Main {
 
         List<Thread> threads = new ArrayList<>();
 
-        ConcurrentHashMap matches = new ConcurrentHashMap();
+        Map<String, Integer> matches = new HashMap<>();
 
         for (int i = 0; i < items.size(); i++) {
             Thread t = Thread.ofVirtual().name(String.valueOf(i)).start(new DatasetReader(items.get(i), items.get(++i), matches));
