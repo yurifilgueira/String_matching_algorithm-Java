@@ -1,18 +1,18 @@
 import util.DatasetReader;
+import util.DistanceCalculator;
 
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.List;
 
 public class Main {
 
-    public static void main(String[] args) {
-        final String PATH = "resources\\train.csv";
+    public static void main(String[] args) throws IOException {
+
+        List<String> lines = DatasetReader.readFile();
 
         long startTime = System.currentTimeMillis();
 
-        List<String> items = new ArrayList<>(List.of("logitech", "keyboard", "mouse", "hyperx", "razer", "lenovo", "acer", "lg", "samsung", "laptop"));
-
-        DatasetReader.readDatasetAndProcess(PATH, items);
+        DistanceCalculator.calculateDistance(lines);
 
         System.out.println("Total read and print time: " + (double) (System.currentTimeMillis() - startTime) / 60000);
     }

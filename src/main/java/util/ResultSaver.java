@@ -32,5 +32,4 @@ public class ResultSaver {
             throw new RuntimeException(e);
         }
     }
-
 }
