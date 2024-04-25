@@ -24,7 +24,7 @@ public class Main {
         int start = 0;
         int end = 600000;
         for (int i = 0; i < 6; i++) {
-            Thread t = Thread.ofPlatform().name(String.valueOf(i)).start(new DistanceCalculator(lines, start, end));
+            Thread t = Thread.ofPlatform().name(String.valueOf(i)).start(new DistanceCalculator(lines, start, end, matches));
             start += 600000;
             end += 600000;
             threads.add(t);
