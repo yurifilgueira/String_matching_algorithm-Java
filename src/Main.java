@@ -1,5 +1,7 @@
 import util.DatasetReader;
+import util.DistanceCalculator;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,18 +9,24 @@ import java.util.Map;
 
 public class Main {
 
-    public static void main(String[] args) throws InterruptedException {
-
-        long startTime = System.currentTimeMillis();
-
-        List<String> items = new ArrayList<>(List.of("logitech", "keyboard", "mouse", "hyperx", "razer", "lenovo", "acer", "lg", "samsung", "laptop"));
+    public static void main(String[] args) throws InterruptedException, IOException {
 
         List<Thread> threads = new ArrayList<>();
 
         Map<String, Integer> matches = new HashMap<>();
 
-        for (int i = 0; i < items.size(); i++) {
-            Thread t = Thread.ofVirtual().name(String.valueOf(i)).start(new DatasetReader(items.get(i), items.get(++i), matches));
+        List<String> lines = DatasetReader.readFile();
+
+        System.out.println("Starting threads...");
+
+        long startTime = System.currentTimeMillis();
+
+        int start = 0;
+        int end = 600000;
+        for (int i = 0; i < 6; i++) {
+            Thread t = Thread.ofVirtual().name(String.valueOf(i)).start(new DistanceCalculator(lines, start, end));
+            start += 600000;
+            end += 600000;
             threads.add(t);
         }
 
@@ -28,6 +36,6 @@ public class Main {
 
         System.out.println("Total read and print time: " + (double) (System.currentTimeMillis() - startTime) / 60000);
         // System.out.println("Count: " + count);
-        matches.forEach((k, v) -> System.out.println("Match: " + k + " - " + v));
+        // matches.forEach((k, v) -> System.out.println("Match: " + k + " - " + v));
     }
 }
