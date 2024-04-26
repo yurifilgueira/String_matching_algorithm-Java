@@ -7,17 +7,13 @@ import java.util.Map;
 public class DistanceCalculator implements Runnable{
 
     private List<String> lines;
-    private Integer start;
-    private Integer end;
-    private Map<String, Integer> matches;
+    private volatile Map<String, Integer> matches;
 
     public DistanceCalculator() {
     }
 
-    public DistanceCalculator(List<String> lines, Integer start, Integer end, Map<String, Integer> matches) {
+    public DistanceCalculator(List<String> lines, Map<String, Integer> matches) {
         this.lines = lines;
-        this.start = start;
-        this.end = end;
         this.matches = matches;
     }
 
@@ -27,15 +23,15 @@ public class DistanceCalculator implements Runnable{
 
         System.out.println(Thread.currentThread().getName() + " -> started.");
 
-        for (int i = start; i < end; i++) {
-            String[] arrayRatingLine = lines.get(i).split(",");
+        for (String line : lines) {
+            String[] arrayRatingLine = line.split(",");
             String rating = arrayRatingLine[2].replaceAll("\"", "").toLowerCase();
             String[] words = rating.split(" ");
 
             for (String item : items) {
 
                 for (String word : words) {
-                    if (LevenshteinDistance.calculateDistance(word, item) == 0){
+                    if (LevenshteinDistance.calculateDistance(word, item) == 0) {
                         compute(word);
                         break;
                     }

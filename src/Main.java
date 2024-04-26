@@ -1,5 +1,6 @@
 import util.DatasetReader;
 import util.DistanceCalculator;
+import util.ResultSaver;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,19 +16,16 @@ public class Main {
 
         Map<String, Integer> matches = new HashMap<>();
 
-        List<String> lines = DatasetReader.readFile();
+        var blocks = DatasetReader.divide();
 
         System.out.println("Starting threads...");
 
         long startTime = System.currentTimeMillis();
 
-        int start = 0;
-        int end = 600000;
         for (int i = 0; i < 6; i++) {
-            Thread t = Thread.ofVirtual().name(String.valueOf(i)).start(new DistanceCalculator(lines, start, end, matches));
-            start += 600000;
-            end += 600000;
+            Thread t = Thread.ofVirtual().name(String.valueOf(i)).unstarted(new DistanceCalculator(blocks.pop(), matches));
             threads.add(t);
+            t.start();
         }
 
         for (Thread thread : threads) {
@@ -35,6 +33,8 @@ public class Main {
         }
 
         System.out.println("Total read and print time: " + (double) (System.currentTimeMillis() - startTime) / 60000);
+
+        ResultSaver.save(matches);
         // System.out.println("Count: " + count);
         // matches.forEach((k, v) -> System.out.println("Match: " + k + " - " + v));
     }

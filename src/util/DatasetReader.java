@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Stack;
 
 public class DatasetReader {
 
@@ -14,5 +15,17 @@ public class DatasetReader {
 
     public static List<String> readFile() throws IOException {
         return Files.readAllLines(Paths.get(PATH));
+    }
+
+    public static Stack<List<String>> divide() throws IOException {
+
+        List<String> file = readFile();
+
+        Stack<List<String>> stack = new Stack<>();
+        for (int i = 0; i < 3600000; i += 600000) {
+            stack.push(file.subList(i, i + 600000));
+        }
+
+        return stack;
     }
 }
