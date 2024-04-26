@@ -1,15 +1,21 @@
 package util;
 
 import java.util.Map;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.Semaphore;
 
 public class MatchingComputer {
 
-    private static final ReentrantLock mutex = new ReentrantLock();
+    private static final Semaphore semaphore = new Semaphore(1);
 
     public static void compute(String word, Map<String, Integer> matches) {
-        mutex.lock();
-        matches.put(word, matches.getOrDefault(word, 0) + 1);
-        mutex.unlock();
+        try {
+            semaphore.acquire();
+            matches.put(word, matches.getOrDefault(word, 0) + 1);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }finally {
+            semaphore.release();
+        }
+
     }
 }
