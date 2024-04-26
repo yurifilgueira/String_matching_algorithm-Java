@@ -17,7 +17,7 @@ public class DatasetReader {
         return Files.readAllLines(Paths.get(PATH));
     }
 
-    public static Stack<List<String>> divide() throws IOException {
+    public static Stack<List<String>> getBlocks() throws IOException {
 
         List<String> file = readFile();
 

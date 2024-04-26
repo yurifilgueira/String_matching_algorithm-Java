@@ -1,6 +1,6 @@
 Quantity of matches:
 keyboard -> 3736
-mouse -> 5474
+mouse -> 5475
 acer -> 134
 samsung -> 1957
 headset -> 3721

@@ -3,12 +3,15 @@ package util;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.locks.ReentrantLock;
+
+import static util.MatchingComputer.compute;
 
 public class DistanceCalculator implements Runnable{
 
     private List<String> lines;
-    private volatile Map<String, Integer> matches;
-
+    private Map<String, Integer> matches;
+    private ReentrantLock mutex = new ReentrantLock();
     public DistanceCalculator() {
     }
 
@@ -32,7 +35,7 @@ public class DistanceCalculator implements Runnable{
 
                 for (String word : words) {
                     if (LevenshteinDistance.calculateDistance(word, item) == 0) {
-                        compute(word);
+                        compute(word, matches);
                         break;
                     }
                 }
@@ -40,12 +43,6 @@ public class DistanceCalculator implements Runnable{
         }
 
         System.out.println(Thread.currentThread().getName() + " -> finished.");
-        ResultSaver.save(matches);
-
-    }
-
-    public void compute(String word) {
-        matches.put(word, matches.getOrDefault(word, 0) + 1);
     }
 
     @Override

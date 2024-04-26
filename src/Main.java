@@ -16,7 +16,7 @@ public class Main {
 
         Map<String, Integer> matches = new HashMap<>();
 
-        var blocks = DatasetReader.divide();
+        var blocks = DatasetReader.getBlocks();
 
         System.out.println("Starting threads...");
 
@@ -35,7 +35,5 @@ public class Main {
         System.out.println("Total read and print time: " + (double) (System.currentTimeMillis() - startTime) / 60000);
 
         ResultSaver.save(matches);
-        // System.out.println("Count: " + count);
-        // matches.forEach((k, v) -> System.out.println("Match: " + k + " - " + v));
     }
 }
