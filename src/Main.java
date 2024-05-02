@@ -5,7 +5,7 @@ import util.ResultSaver;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.LongAdder;
 
 public class Main {
 
@@ -19,9 +19,9 @@ public class Main {
 
         long startTime = System.currentTimeMillis();
 
-        AtomicInteger counter = new AtomicInteger(0);
+        LongAdder counter = new LongAdder();
         for (int i = 0; i < 6; i++) {
-            Thread t = Thread.ofPlatform().name(String.valueOf(i)).unstarted(new DistanceCalculator(blocks.pop(), counter));
+            Thread t = Thread.ofVirtual().name(String.valueOf(i)).unstarted(new DistanceCalculator(blocks.pop(), counter));
             threads.add(t);
             t.start();
         }

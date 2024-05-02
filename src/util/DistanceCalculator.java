@@ -2,18 +2,18 @@ package util;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.LongAdder;
 
 public class DistanceCalculator implements Runnable{
 
     private List<String> lines;
     private Map<String, Integer> matches;
-    private AtomicInteger counter;
+    private LongAdder counter;
 
     public DistanceCalculator() {
     }
 
-    public DistanceCalculator(List<String> lines, AtomicInteger counter) {
+    public DistanceCalculator(List<String> lines, LongAdder counter) {
         this.lines = lines;
         this.counter = counter;
     }
@@ -29,8 +29,7 @@ public class DistanceCalculator implements Runnable{
 
             for (String word : words) {
                 if (LevenshteinDistance.calculateDistance(word, "mouse") == 0) {
-                    counter.incrementAndGet();
-                    break;
+                    counter.increment();
                 }
             }
         }

@@ -3,7 +3,7 @@ package util;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.LongAdder;
 
 import static java.nio.file.Files.newBufferedWriter;
 
@@ -11,7 +11,7 @@ public class ResultSaver {
 
     private final static String PATH = "resources\\results.txt";
 
-    public static void save(AtomicInteger counter){
+    public static void save(LongAdder counter){
 
         try (BufferedWriter bw = newBufferedWriter(Paths.get(PATH))) {
 
