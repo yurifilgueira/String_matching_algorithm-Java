@@ -21,7 +21,7 @@ public class Main {
 
         AtomicInteger counter = new AtomicInteger(0);
         for (int i = 0; i < 6; i++) {
-            Thread t = Thread.ofVirtual().name(String.valueOf(i)).unstarted(new DistanceCalculator(blocks.pop(), counter));
+            Thread t = Thread.ofPlatform().name(String.valueOf(i)).unstarted(new DistanceCalculator(blocks.pop(), counter));
             threads.add(t);
             t.start();
         }
