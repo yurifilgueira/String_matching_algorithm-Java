@@ -11,21 +11,18 @@ public class ResultSaver {
 
     private final static String PATH = "resources\\results.txt";
 
-    public static void save(Map<String, Integer> matches){
+    public static void save(Map<String, Integer> counter){
 
         try (BufferedWriter bw = newBufferedWriter(Paths.get(PATH))) {
 
             bw.write("Quantity of matches:");
             bw.newLine();
-            matches.forEach((k, v) -> {
-
+            counter.forEach((k, v) -> {
                 try {
-                    bw.write(k + " -> " + v);
-                    bw.newLine();
+                    bw.write((k + " -> " + v));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-
             });
 
         } catch (IOException e) {

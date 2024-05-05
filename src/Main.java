@@ -14,16 +14,15 @@ public class Main {
 
         List<Thread> threads = new ArrayList<>();
 
-        Map<String, Integer> matches = new HashMap<>();
-
         var blocks = DatasetReader.getBlocks();
 
         System.out.println("Starting threads...");
 
         long startTime = System.currentTimeMillis();
 
+        Map<String, Integer> counter = new HashMap<>();
         for (int i = 0; i < 6; i++) {
-            Thread t = Thread.ofPlatform().name(String.valueOf(i)).unstarted(new DistanceCalculator(blocks.pop(), matches));
+            Thread t = Thread.ofPlatform().name(String.valueOf(i)).unstarted(new DistanceCalculator(blocks.pop(), counter));
             threads.add(t);
             t.start();
         }
@@ -32,8 +31,8 @@ public class Main {
             thread.join();
         }
 
-        System.out.println("Total read and print time: " + (double) (System.currentTimeMillis() - startTime) / 60000);
+        System.out.println("Total read and print time: " + (double) (System.currentTimeMillis() - startTime) / 1000);
 
-        ResultSaver.save(matches);
+        ResultSaver.save(counter);
     }
 }

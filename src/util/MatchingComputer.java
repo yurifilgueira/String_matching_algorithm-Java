@@ -7,9 +7,9 @@ public class MatchingComputer {
 
     private static final ReentrantLock mutex = new ReentrantLock();
 
-    public static void compute(String word, Map<String, Integer> matches) {
+    public static void compute(Map<String, Integer> counter, String item) {
         mutex.lock();
-        matches.put(word, matches.getOrDefault(word, 0) + 1);
-        mutex.lock();
+        counter.put(item, counter.getOrDefault(item, 0) + 1);
+        mutex.unlock();
     }
 }
