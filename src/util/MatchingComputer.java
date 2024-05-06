@@ -7,15 +7,14 @@ public class MatchingComputer {
 
     private static final Semaphore semaphore = new Semaphore(1);
 
-    public static void compute(String word, Map<String, Integer> matches) {
+    public static void compute(String word, Map<String, Integer> counter) {
         try {
             semaphore.acquire();
-            matches.put(word, matches.getOrDefault(word, 0) + 1);
+            counter.put(word, counter.getOrDefault(word, 0) + 1);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }finally {
             semaphore.release();
         }
-
     }
 }
