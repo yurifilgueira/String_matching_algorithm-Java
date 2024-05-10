@@ -8,13 +8,13 @@ import java.util.Stack;
 
 public class DatasetReader {
 
-    public static final String PATH = "resources\\train.csv";
+    private static final String PATH = "resources\\train.csv";
 
     public DatasetReader() {
     }
 
     public static List<String> readFile() throws IOException {
-        return Files.readAllLines(Paths.get(PATH));
+        return List.copyOf(Files.readAllLines(Paths.get(PATH)));
     }
 
     public static Stack<List<String>> getBlocks() throws IOException {
@@ -23,7 +23,7 @@ public class DatasetReader {
 
         Stack<List<String>> stack = new Stack<>();
         for (int i = 0; i < 3600000; i += 600000) {
-            stack.push(file.subList(i, i + 600000));
+            stack.push(List.copyOf(file.subList(i, i + 600000)));
         }
 
         return stack;

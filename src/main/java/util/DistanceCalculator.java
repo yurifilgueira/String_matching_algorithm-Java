@@ -5,11 +5,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class DistanceCalculator implements Runnable{
 
-    private List<String> lines;
-    private AtomicInteger counter;
-
-    public DistanceCalculator() {
-    }
+    private final List<String> lines;
+    private final AtomicInteger counter;
 
     public DistanceCalculator(List<String> lines, AtomicInteger counter) {
         this.lines = lines;

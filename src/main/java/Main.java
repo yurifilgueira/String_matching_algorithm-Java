@@ -11,15 +11,14 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException, IOException {
 
-        List<Thread> threads = new ArrayList<>();
-
-        var blocks = DatasetReader.getBlocks();
+        final List<Thread> threads = new ArrayList<>();
+        final var blocks = DatasetReader.getBlocks();
 
         System.out.println("Starting threads...");
 
         long startTime = System.currentTimeMillis();
 
-        AtomicInteger counter = new AtomicInteger(0);
+        final AtomicInteger counter = new AtomicInteger(0);
         for (int i = 0; i < 6; i++) {
             Thread t = Thread.ofPlatform().name(String.valueOf(i)).unstarted(new DistanceCalculator(blocks.pop(), counter));
             threads.add(t);
@@ -30,7 +29,7 @@ public class Main {
             thread.join();
         }
 
-        System.out.println("Total read and print time: " + (double) (System.currentTimeMillis() - startTime) / 60000);
+        System.out.println("Total read and print time: " + (double) (System.currentTimeMillis() - startTime) / 1000);
 
         ResultSaver.save(counter);
     }
