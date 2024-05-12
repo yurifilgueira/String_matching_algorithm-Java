@@ -30,3 +30,6 @@ bin/
 
 ### Resource ###
 resources/
+
+### JFR ###
+flight.jfr
