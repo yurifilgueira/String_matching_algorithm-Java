@@ -23,7 +23,7 @@ public class Main {
         long startTime = System.currentTimeMillis();
 
         for (int i = 0; i < 6; i++) {
-            Thread t = Thread.ofVirtual().name(String.valueOf(i)).unstarted(new DistanceCalculator(blocks.pop(), counter));
+            Thread t = Thread.ofVirtual().name("Distance calculator " + i).unstarted(new DistanceCalculator(blocks.pop(), counter));
             threads.add(t);
             t.start();
         }
