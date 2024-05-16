@@ -1,25 +1,24 @@
 package util;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.Callable;
 
-public class DistanceCalculator implements Runnable{
+public class DistanceCalculator implements Callable<Integer> {
 
     private List<String> lines;
-    private AtomicInteger counter;
 
     public DistanceCalculator() {
     }
 
-    public DistanceCalculator(List<String> lines, AtomicInteger counter) {
+    public DistanceCalculator(List<String> lines) {
         this.lines = lines;
-        this.counter = counter;
     }
 
-    public void calculateDistance() {
+    public Integer calculateDistance() {
 
         System.out.println(Thread.currentThread().getName() + " -> started.");
 
+        int count = 0;
         for (String line : lines) {
             String[] arrayRatingLine = line.split(",");
             String rating = arrayRatingLine[2].replaceAll("\"", "").toLowerCase();
@@ -27,16 +26,17 @@ public class DistanceCalculator implements Runnable{
 
             for (String word : words) {
                 if (LevenshteinDistance.calculateDistance(word, "mouse") == 0) {
-                    counter.incrementAndGet();
+                    count += 1;
                 }
             }
         }
 
         System.out.println(Thread.currentThread().getName() + " -> finished.");
+        return count;
     }
 
     @Override
-    public void run() {
-        calculateDistance();
+    public Integer call() {
+        return calculateDistance();
     }
 }

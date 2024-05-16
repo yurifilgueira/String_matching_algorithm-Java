@@ -5,7 +5,9 @@ import util.ResultSaver;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
 
 public class Main {
 
@@ -13,15 +15,16 @@ public class Main {
 
         List<Thread> threads = new ArrayList<>();
 
+        long startTime = System.currentTimeMillis();
         var blocks = DatasetReader.getBlocks();
 
         System.out.println("Starting threads...");
 
-        long startTime = System.currentTimeMillis();
-
-        AtomicInteger counter = new AtomicInteger(0);
+        List<Future<Integer>> futures = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
-            Thread t = Thread.ofVirtual().name("Distance calculator " + i).unstarted(new DistanceCalculator(blocks.pop(), counter));
+            FutureTask<Integer> futureTask = new FutureTask<>(new DistanceCalculator(blocks.pop()));
+            futures.add(futureTask);
+            Thread t = Thread.ofVirtual().name("Distance calculator " + i).unstarted(futureTask);
             threads.add(t);
             t.start();
         }
@@ -30,8 +33,17 @@ public class Main {
             thread.join();
         }
 
-        System.out.println("Total read and print time: " + (double) (System.currentTimeMillis() - startTime) / 60000);
+        final int count = futures.stream().mapToInt(future -> {
+            try {
+                return future.get();
+            }
+            catch (InterruptedException | ExecutionException e) {
+                throw new RuntimeException(e);
+            }
+        }).sum();
 
-        ResultSaver.save(counter);
+        System.out.println("Total read and print time: " + (double) (System.currentTimeMillis() - startTime) / 1000);
+
+        ResultSaver.save(count);
     }
 }
