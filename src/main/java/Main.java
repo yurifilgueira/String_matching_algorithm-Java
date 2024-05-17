@@ -1,0 +1,29 @@
+import util.DatasetReader;
+import util.DistanceCalculator;
+import util.ResultSaver;
+
+import java.io.IOException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ForkJoinPool;
+
+public class Main {
+
+    public static void main(String[] args) throws InterruptedException, IOException, ExecutionException {
+
+        long startTime = System.currentTimeMillis();
+        var blocks = DatasetReader.getBlocks();
+        System.out.println("Starting threads...");
+
+        ForkJoinPool forkJoinPool = new ForkJoinPool(6);
+
+        int count = forkJoinPool.submit(() -> blocks.stream()
+                .mapToInt(block -> forkJoinPool.invoke(new DistanceCalculator(block)))
+                .sum()).get();
+
+        System.out.println("Total read and print time: " + (double) (System.currentTimeMillis() - startTime) / 1000);
+
+        ResultSaver.save(count);
+
+        forkJoinPool.shutdown();
+    }
+}
