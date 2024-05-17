@@ -5,7 +5,7 @@ import java.util.concurrent.RecursiveTask;
 
 public class DistanceCalculator extends RecursiveTask<Integer> {
 
-    private static final int THRESHOLD = 100;
+    private static final int THRESHOLD = 1000;
 
     private final List<String> lines;
     private final int start;
