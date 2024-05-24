@@ -14,7 +14,7 @@ public class Main {
         var blocks = DatasetReader.getBlocks();
         System.out.println("Starting threads...");
 
-        ForkJoinPool forkJoinPool = new ForkJoinPool(6);
+        ForkJoinPool forkJoinPool = ForkJoinPool.commonPool();
 
         int count = forkJoinPool.submit(() -> blocks.stream()
                 .mapToInt(block -> forkJoinPool.invoke(new DistanceCalculator(block)))
