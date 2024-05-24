@@ -13,25 +13,22 @@ public class Main {
 
         List<Thread> threads = new ArrayList<>();
 
-        var blocks = DatasetReader.getBlocks();
+        long startTime = System.currentTimeMillis();
+        var lines = DatasetReader.readFile();
 
         System.out.println("Starting threads...");
 
-        long startTime = System.currentTimeMillis();
+        AtomicInteger totalCounter = new AtomicInteger(0);
 
-        AtomicInteger counter = new AtomicInteger(0);
-        for (int i = 0; i < 6; i++) {
-            Thread t = Thread.ofVirtual().name("Distance calculator " + i).unstarted(new DistanceCalculator(blocks.pop(), counter));
-            threads.add(t);
-            t.start();
-        }
+        lines.parallelStream()
+                .map(DistanceCalculator::new)
+                .mapToInt(DistanceCalculator::calculateDistance)
+                .forEach(totalCounter::addAndGet);
 
-        for (Thread thread : threads) {
-            thread.join();
-        }
+        System.out.println("Total de ocorrências da palavra 'mouse': " + totalCounter.get());
 
-        System.out.println("Total read and print time: " + (double) (System.currentTimeMillis() - startTime) / 60000);
+        System.out.println("Total read and print time: " + (double) (System.currentTimeMillis() - startTime) / 1000);
 
-        ResultSaver.save(counter);
+        ResultSaver.save(totalCounter);
     }
 }
