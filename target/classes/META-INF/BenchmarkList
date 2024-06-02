@@ -1,0 +1,2 @@
+JMH S 17 benchmark.TestJMH S 62 benchmark.jmh_generated.TestJMH_benchCalculateDistance_jmhTest S 22 benchCalculateDistance S 10 Throughput E A 1 1 1 E I 1 5 E E E E E I 1 1 E E E E E E U 7 SECONDS E E 
+JMH S 17 benchmark.TestJMH S 62 benchmark.jmh_generated.TestJMH_benchCalculateDistance_jmhTest S 22 benchCalculateDistance S 11 AverageTime E A 1 1 1 E I 1 5 E E E E E I 1 1 E E E E E E U 7 SECONDS E E 
