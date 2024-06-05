@@ -2,7 +2,7 @@ package benchmark.jmh;
 
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
-import util.DatasetReader;
+import readers.Reader;
 import util.DistanceCalculator;
 
 import java.io.IOException;
@@ -19,7 +19,8 @@ public class TestJMH {
 
     @Setup(Level.Trial)
     public void setup() throws IOException {
-        blocks = DatasetReader.getBlocks();
+        Reader reader = new Reader();
+        blocks = reader.getBlocks();
     }
 
     @Benchmark
