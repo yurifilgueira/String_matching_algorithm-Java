@@ -1,32 +1,24 @@
-import util.DatasetReader;
+import readers.Reader;
 import util.DistanceCalculator;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Main {
 
     public static void main(String[] args) throws InterruptedException, IOException {
 
+        long startTime = System.currentTimeMillis();
+
         List<Thread> threads = new ArrayList<>();
 
-        Map<String, Integer> matches = new HashMap<>();
-
-        List<String> lines = DatasetReader.readFile();
+        Reader reader = new Reader();
+        Stack<List<String>> blocks = reader.getBlocks();
 
         System.out.println("Starting threads...");
 
-        long startTime = System.currentTimeMillis();
-
-        int start = 0;
-        int end = 600000;
         for (int i = 0; i < 6; i++) {
-            Thread t = Thread.ofPlatform().name(String.valueOf(i)).start(new DistanceCalculator(lines, start, end, matches));
-            start += 600000;
-            end += 600000;
+            Thread t = Thread.ofPlatform().name(String.valueOf(i)).start(new DistanceCalculator(blocks.pop()));
             threads.add(t);
         }
 
@@ -34,8 +26,6 @@ public class Main {
             thread.join();
         }
 
-        System.out.println("Total read and print time: " + (double) (System.currentTimeMillis() - startTime) / 60000);
-        // System.out.println("Count: " + count);
-        // matches.forEach((k, v) -> System.out.println("Match: " + k + " - " + v));
+        System.out.println("Total read and print time: " + (double) (System.currentTimeMillis() - startTime) / 1000);
     }
 }

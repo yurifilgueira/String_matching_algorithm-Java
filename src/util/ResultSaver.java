@@ -11,26 +11,17 @@ import static java.nio.file.Files.newBufferedWriter;
 
 public class ResultSaver {
 
-    private final static String PATH = "resources\\results.txt";
+    private final static String PATH = "resources/results.txt";
     private static final Lock lock = new ReentrantLock();
 
-     public static void save(Map<String, Integer> matches){
+     public static void save(Integer count){
 
         lock.lock();
         try (BufferedWriter bw = newBufferedWriter(Paths.get(PATH))) {
 
             bw.write("Quantity of matches:");
             bw.newLine();
-            matches.forEach((k, v) -> {
-
-                try {
-                    bw.write(k + " -> " + v);
-                    bw.newLine();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-
-            });
+            bw.write(count);
 
         } catch (IOException e) {
             throw new RuntimeException(e);
