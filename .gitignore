@@ -32,4 +32,4 @@ bin/
 resources/
 
 ### JFR ###
-flight.jfr
+atomic.jfr

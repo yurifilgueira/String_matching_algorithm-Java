@@ -28,7 +28,7 @@ public class Reader {
                 lines.add(rating);
             }
 
-            return lines;
+            return List.copyOf(lines);
         }
     }
 
