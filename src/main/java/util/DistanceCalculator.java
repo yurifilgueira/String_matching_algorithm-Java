@@ -42,9 +42,7 @@ public class DistanceCalculator extends RecursiveTask<Integer> {
         int count = 0;
         for (int i = start; i < end; i++) {
             String line = lines.get(i);
-            String[] arrayRatingLine = line.split(",");
-            String rating = arrayRatingLine[2].replaceAll("\"", "").toLowerCase();
-            String[] words = rating.split(" ");
+            String[] words = line.split(" ");
 
             for (String word : words) {
                 if (LevenshteinDistance.calculateDistance("mouse", word) == 0) {
