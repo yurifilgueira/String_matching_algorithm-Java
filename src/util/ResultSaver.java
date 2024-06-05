@@ -9,7 +9,7 @@ import static java.nio.file.Files.newBufferedWriter;
 
 public class ResultSaver {
 
-    private final static String PATH = "resources\\results.txt";
+    private final static String PATH = "resources/results.txt";
 
     public static void save(Map<String, Integer> counter){
 
