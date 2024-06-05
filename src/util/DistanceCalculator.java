@@ -23,9 +23,7 @@ public class DistanceCalculator implements Runnable{
         System.out.println(Thread.currentThread().getName() + " -> started.");
 
         for (String line : lines) {
-            String[] arrayRatingLine = line.split(",");
-            String rating = arrayRatingLine[2].replaceAll("\"", "").toLowerCase();
-            String[] words = rating.split(" ");
+            String[] words = line.split(" ");
 
             for (String word : words) {
                 if (LevenshteinDistance.calculateDistance(word, "mouse") == 0) {
@@ -35,7 +33,7 @@ public class DistanceCalculator implements Runnable{
         }
 
         System.out.println(Thread.currentThread().getName() + " -> finished.");
-    }
+ }
 
     @Override
     public void run() {

@@ -1,4 +1,4 @@
-import util.DatasetReader;
+import readers.Reader;
 import util.DistanceCalculator;
 import util.ResultSaver;
 
@@ -12,13 +12,14 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException, IOException {
 
+        long startTime = System.currentTimeMillis();
+
         List<Thread> threads = new ArrayList<>();
 
-        var blocks = DatasetReader.getBlocks();
+        Reader reader = new Reader();
+        var blocks = reader.getBlocks();
 
         System.out.println("Starting threads...");
-
-        long startTime = System.currentTimeMillis();
 
         Map<String, Integer> counter = new HashMap<>();
         for (int i = 0; i < 6; i++) {
