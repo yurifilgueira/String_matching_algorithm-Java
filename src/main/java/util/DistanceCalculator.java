@@ -20,9 +20,7 @@ public class DistanceCalculator implements Callable<Integer> {
 
         int count = 0;
         for (String line : lines) {
-            String[] arrayRatingLine = line.split(",");
-            String rating = arrayRatingLine[2].replaceAll("\"", "").toLowerCase();
-            String[] words = rating.split(" ");
+            String[] words = line.split(" ");
 
             for (String word : words) {
                 if (LevenshteinDistance.calculateDistance(word, "mouse") == 0) {

@@ -1,4 +1,4 @@
-import util.DatasetReader;
+import readers.Reader;
 import util.DistanceCalculator;
 import util.ResultSaver;
 
@@ -16,7 +16,8 @@ public class Main {
         List<Thread> threads = new ArrayList<>();
 
         long startTime = System.currentTimeMillis();
-        var blocks = DatasetReader.getBlocks();
+        Reader reader = new Reader();
+        var blocks = reader.getBlocks();
 
         System.out.println("Starting threads...");
 
