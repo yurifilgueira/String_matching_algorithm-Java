@@ -1,4 +1,4 @@
-import util.DatasetReader;
+import readers.Reader;
 import util.DistanceCalculator;
 import util.ResultSaver;
 
@@ -9,12 +9,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Main {
 
-    public static void main(String[] args) throws InterruptedException, IOException {
+    public static void main(String[] args) throws IOException {
 
         List<Thread> threads = new ArrayList<>();
 
         long startTime = System.currentTimeMillis();
-        var lines = DatasetReader.readFile();
+        Reader reader = new Reader();
+        var lines = reader.readFile();
 
         System.out.println("Starting threads...");
 

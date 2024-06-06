@@ -7,11 +7,9 @@ public class DistanceCalculator {
         this.line = line;
     }
 
-    public int calculateDistance() { // Retorna o número de correspondências
+    public int calculateDistance() {
         int count = 0;
-        String[] arrayRatingLine = line.split(",");
-        String rating = arrayRatingLine[2].replaceAll("\"", "").toLowerCase();
-        String[] words = rating.split(" ");
+        String[] words = line.split(" ");
 
         for (String word : words) {
             if (LevenshteinDistance.calculateDistance(word, "mouse") == 0) {
