@@ -32,7 +32,7 @@ public class Reader {
         }
     }
 
-    public Stack<List<String>> getBlocks() throws IOException {
+    public static Stack<List<String>> getBlocks() throws IOException {
         List<String> file = readFile();
 
         Stack<List<String>> stack = new Stack<>();

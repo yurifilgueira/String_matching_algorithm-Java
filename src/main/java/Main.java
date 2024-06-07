@@ -18,8 +18,7 @@ public class Main {
 
         ConcurrentHashMap<String, Integer> counter = new ConcurrentHashMap<>();
 
-        Reader reader = new Reader();
-        var blocks = reader.getBlocks();
+        var blocks = Reader.getBlocks();
 
         System.out.println("Starting threads...");
 
