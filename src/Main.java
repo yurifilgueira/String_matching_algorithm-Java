@@ -4,10 +4,9 @@ import util.ResultSaver;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.StructuredTaskScope;
 
 public class Main {
 
@@ -24,18 +23,38 @@ public class Main {
 
         System.out.println("Starting threads...");
 
-        for (int i = 0; i < 6; i++) {
-            Thread t = Thread.ofVirtual().name(String.valueOf(i)).unstarted(new DistanceCalculator(counter, blocks.pop()));
-            threads.add(t);
-            t.start();
+        try (var taskScope = new StructuredTaskScope.ShutdownOnFailure()) {
+
+            List<StructuredTaskScope.Subtask<Integer>> tasks = new ArrayList<>();
+            for (var block : blocks) {
+                DistanceCalculator calculator = new DistanceCalculator(block);
+                var future = taskScope.fork(calculator::calculateDistance);
+
+                tasks.add(future);
+
+            }
+            taskScope.join();
+
+            int totalCount = tasks.stream()
+                    .map(task -> getFutureResult(task)) // Get the Integer results
+                    .mapToInt(Integer::intValue) // Convert to ints
+                    .sum();
+
+            System.out.println(totalCount);
         }
 
-        for (Thread thread : threads) {
-            thread.join();
-        }
-
-        System.out.println("Total read and print time: " + (double) (System.currentTimeMillis() - startTime) / 1000);
+        System.out.println(STR."Total read and print time: \{(double) (System.currentTimeMillis() - startTime) / 1000}");
 
         ResultSaver.save(counter);
+    }
+
+    private static Integer getFutureResult(StructuredTaskScope.Subtask<Integer> future) {
+        try {
+            return future.get(); // Get the result; may block
+        } catch (Exception e) {
+            // Handle exceptions (e.g., task failed)
+            e.printStackTrace();
+            return 0; // Or another default value
+        }
     }
 }

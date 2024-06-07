@@ -1,2 +1,1 @@
 Quantity of counter:
-mouse -> 7272
