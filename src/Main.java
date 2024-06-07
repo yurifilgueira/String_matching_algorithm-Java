@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Main {
 
@@ -16,7 +17,7 @@ public class Main {
 
         List<Thread> threads = new ArrayList<>();
 
-        Map<String, Integer> counter = new HashMap<>();
+        ConcurrentHashMap<String, Integer> counter = new ConcurrentHashMap<>();
 
         Reader reader = new Reader();
         var blocks = reader.getBlocks();
@@ -24,7 +25,7 @@ public class Main {
         System.out.println("Starting threads...");
 
         for (int i = 0; i < 6; i++) {
-            Thread t = Thread.ofVirtual().name(String.valueOf(i)).unstarted(new DistanceCalculator(blocks.pop(), counter));
+            Thread t = Thread.ofVirtual().name(String.valueOf(i)).unstarted(new DistanceCalculator(counter, blocks.pop()));
             threads.add(t);
             t.start();
         }

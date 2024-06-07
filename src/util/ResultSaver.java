@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static java.nio.file.Files.newBufferedWriter;
 
@@ -11,7 +12,7 @@ public class ResultSaver {
 
     private final static String PATH = "resources\\results.txt";
 
-    public static void save(Map<String, Integer> counter){
+    public static void save(final ConcurrentHashMap<String, Integer> counter){
 
         try (BufferedWriter bw = newBufferedWriter(Paths.get(PATH))) {
 

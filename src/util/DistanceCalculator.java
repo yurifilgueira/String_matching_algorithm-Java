@@ -1,21 +1,20 @@
 package util;
 
 import java.util.List;
-import java.util.Map;
-
-import static util.MatchingComputer.compute;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class DistanceCalculator implements Runnable{
 
     private List<String> lines;
-    private Map<String, Integer> counter;
+    private final ConcurrentHashMap<String, Integer> counter;
     
     public DistanceCalculator() {
+        counter = new ConcurrentHashMap<>();
     }
 
-    public DistanceCalculator(List<String> lines, Map<String, Integer> counter) {
-        this.lines = lines;
+    public DistanceCalculator(ConcurrentHashMap<String, Integer> counter, List<String> lines) {
         this.counter = counter;
+        this.lines = lines;
     }
 
     public void calculateDistance() {
@@ -27,7 +26,7 @@ public class DistanceCalculator implements Runnable{
 
             for (String word : words) {
                 if (LevenshteinDistance.calculateDistance(word, "mouse") == 0) {
-                    compute(word, counter);
+                    counter.put(word, counter.getOrDefault(word, 0) + 1);
                 }
             }
         }
