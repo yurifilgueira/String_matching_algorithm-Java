@@ -31,4 +31,16 @@ public class TestJMH {
         bh.consume(result);
     }
 
+    @Benchmark
+    @BenchmarkMode({Mode.AverageTime, Mode.Throughput})
+    @Warmup(iterations = 5)
+    @Fork(value = 1)
+    @OutputTimeUnit(TimeUnit.SECONDS)
+    public void benchReadFile(Blackhole bh) throws IOException {
+
+        final List<String> lines = Reader.readFile();
+
+        bh.consume(lines);
+    }
+
 }

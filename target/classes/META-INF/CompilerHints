@@ -4,4 +4,5 @@ dontinline,*.*_sample_jmhStub
 dontinline,*.*_ss_jmhStub
 dontinline,*.*_thrpt_jmhStub
 inline,benchmark/TestJMH.benchCalculateDistance
+inline,benchmark/TestJMH.benchReadFile
 inline,benchmark/TestJMH.setup
