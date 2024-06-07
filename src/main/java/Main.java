@@ -14,8 +14,6 @@ public class Main {
 
         long startTime = System.currentTimeMillis();
 
-        List<Thread> threads = new ArrayList<>();
-
         ConcurrentHashMap<String, Integer> counter = new ConcurrentHashMap<>();
 
         var blocks = Reader.getBlocks();
