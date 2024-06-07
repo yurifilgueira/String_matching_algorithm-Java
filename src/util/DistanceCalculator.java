@@ -5,7 +5,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class DistanceCalculator implements Callable<Integer> {
+public class DistanceCalculator {
 
     private List<String> lines;
 
@@ -36,9 +36,4 @@ public class DistanceCalculator implements Callable<Integer> {
         return count.get();
     }
 
-    @Override
-    public Integer call() {
-        calculateDistance();
-        return null;
-    }
 }

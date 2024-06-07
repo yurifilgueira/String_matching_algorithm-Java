@@ -36,8 +36,8 @@ public class Main {
             taskScope.join();
 
             int totalCount = tasks.stream()
-                    .map(task -> getFutureResult(task)) // Get the Integer results
-                    .mapToInt(Integer::intValue) // Convert to ints
+                    .map(task -> getFutureResult(task))
+                    .mapToInt(Integer::intValue)
                     .sum();
 
             System.out.println(totalCount);
@@ -50,11 +50,10 @@ public class Main {
 
     private static Integer getFutureResult(StructuredTaskScope.Subtask<Integer> future) {
         try {
-            return future.get(); // Get the result; may block
+            return future.get();
         } catch (Exception e) {
-            // Handle exceptions (e.g., task failed)
             e.printStackTrace();
-            return 0; // Or another default value
+            return 0;
         }
     }
 }
