@@ -15,7 +15,7 @@ public class Main {
         int result = DistanceCalculator.calculateDistance(lines);
 
         ResultSaver.save(result);
-        System.out.println("Result: " + result);
+
         System.out.println("Total read and print time: " + (double) (System.currentTimeMillis() - startTime) / 1000);
     }
 }
