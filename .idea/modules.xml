@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/String_matching_algorithm-Java.iml" filepath="$PROJECT_DIR$/String_matching_algorithm-Java.iml" />
+      <module fileurl="file://$PROJECT_DIR$/target/target1.iml" filepath="$PROJECT_DIR$/target/target1.iml" />
     </modules>
   </component>
 </project>
