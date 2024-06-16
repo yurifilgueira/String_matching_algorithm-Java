@@ -1,4 +1,4 @@
-package benchmark.jmh;
+package benchmark;
 
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
@@ -17,7 +17,7 @@ public class TestJMH {
 
     private Stack<List<String>> blocks;
 
-    @Setup(Level.Trial)
+    @Setup(Level.Invocation)
     public void setup() throws IOException {
         Reader reader = new Reader();
         blocks = reader.getBlocks();
@@ -34,7 +34,7 @@ public class TestJMH {
 
         AtomicInteger counter = new AtomicInteger(0);
         for (int i = 0; i < 6; i++) {
-            Thread t = Thread.ofVirtual().name("Distance calculator " + i).unstarted(new DistanceCalculator(blocks.get(i), counter));
+            Thread t = Thread.ofPlatform().name(String.valueOf(i)).unstarted(new DistanceCalculator(blocks.pop(), counter));
             threads.add(t);
             t.start();
         }
@@ -46,4 +46,15 @@ public class TestJMH {
         bh.consume(counter.get());
     }
 
+    @Benchmark
+    @BenchmarkMode({Mode.AverageTime, Mode.Throughput})
+    @Warmup(iterations = 5)
+    @Fork(value = 1)
+    @OutputTimeUnit(TimeUnit.SECONDS)
+    public void benchReadFile(Blackhole bh) throws IOException {
+
+        final List<String> lines = Reader.readFile();
+
+        bh.consume(lines);
+    }
 }
