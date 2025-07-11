@@ -7,7 +7,6 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="Best-Matching_Algorithm" />
-        <module name="String_matching_algorithm-Java" />
       </profile>
     </annotationProcessing>
   </component>
